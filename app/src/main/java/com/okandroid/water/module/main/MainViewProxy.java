@@ -24,6 +24,8 @@ public class MainViewProxy extends BaseViewProxy<MainView> {
         if (view != null) {
             if (!WaterManager.getInstance().isAllPermissionsGranted()) {
                 view.checkAllPermissions(WaterManager.getAllPermissions());
+            } else {
+                view.closeSelf();
             }
         }
     }

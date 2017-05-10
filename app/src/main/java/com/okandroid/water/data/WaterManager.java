@@ -8,12 +8,11 @@ import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
-import android.widget.Toast;
 
 import com.okandroid.boot.AppContext;
-import com.okandroid.boot.thread.Threads;
 import com.okandroid.boot.util.GrantResultUtil;
 import com.okandroid.water.R;
+import com.okandroid.water.util.MessageUtil;
 
 /**
  * Created by idonans on 2017/5/10.
@@ -82,7 +81,7 @@ public class WaterManager {
      */
     public void unlockScreen() {
         if (!checkPermissions()) {
-            showMessage("权限不足");
+            MessageUtil.showPermissionsErrorMessage();
             return;
         }
 
@@ -106,7 +105,7 @@ public class WaterManager {
      */
     public void lockScreen() {
         if (!checkPermissions()) {
-            showMessage("权限不足");
+            MessageUtil.showPermissionsErrorMessage();
             return;
         }
 
@@ -155,16 +154,6 @@ public class WaterManager {
                 e.printStackTrace();
             }
         }
-    }
-
-    private void showMessage(final CharSequence message) {
-        Threads.runOnUi(new Runnable() {
-            @Override
-            public void run() {
-                Context context = AppContext.getContext();
-                Toast.makeText(context, String.valueOf(message), Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     private boolean checkPermissions() {

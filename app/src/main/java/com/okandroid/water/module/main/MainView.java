@@ -10,4 +10,6 @@ public interface MainView extends BaseView {
 
     void checkAllPermissions(String[] permissions);
 
+    void closeSelf();
+
 }

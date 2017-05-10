@@ -15,6 +15,8 @@ import com.okandroid.boot.util.IOUtil;
 import com.okandroid.boot.util.SystemUtil;
 import com.okandroid.water.R;
 import com.okandroid.water.app.BaseFragment;
+import com.okandroid.water.data.WaterManager;
+import com.okandroid.water.util.MessageUtil;
 
 /**
  * Created by idonans on 2017/5/10.
@@ -58,7 +60,7 @@ public class MainFragment extends BaseFragment implements MainView {
                 .setNegativeButton("不使用系统功能", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // ignore
+                        closeSelf();
                     }
                 })
                 .setPositiveButton("开始配置权限", new DialogInterface.OnClickListener() {
@@ -68,6 +70,21 @@ public class MainFragment extends BaseFragment implements MainView {
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (!WaterManager.getInstance().isAllPermissionsGranted()) {
+            MessageUtil.showPermissionsErrorMessage();
+        }
+
+        closeSelf();
+    }
+
+    @Override
+    public void closeSelf() {
+        Activity activity = SystemUtil.getActivityFromFragment(this);
+        activity.finish();
     }
 
     private class Content extends PreloadSubViewHelper {
