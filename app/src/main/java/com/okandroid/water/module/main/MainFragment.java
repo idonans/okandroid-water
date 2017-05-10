@@ -66,7 +66,8 @@ public class MainFragment extends BaseFragment implements MainView {
                     public void onClick(DialogInterface dialog, int which) {
                         requestPermissions(permissions, REQUEST_PERMISSION_CODE_ALL);
                     }
-                });
+                })
+                .show();
     }
 
     private class Content extends PreloadSubViewHelper {
