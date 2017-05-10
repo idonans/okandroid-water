@@ -1,18 +1,12 @@
 package com.okandroid.water.module.main;
 
-import android.Manifest;
-
 import com.okandroid.water.app.BaseViewProxy;
+import com.okandroid.water.data.WaterManager;
 
 /**
  * Created by idonans on 2017/5/10.
  */
 public class MainViewProxy extends BaseViewProxy<MainView> {
-
-    private static final String[] ALL_PERMISSIONS = {
-            Manifest.permission.RECEIVE_BOOT_COMPLETED,
-            Manifest.permission.DISABLE_KEYGUARD
-    };
 
     public MainViewProxy(MainView view) {
         super(view);
@@ -28,7 +22,7 @@ public class MainViewProxy extends BaseViewProxy<MainView> {
 
         MainView view = getView();
         if (view != null) {
-            view.checkAllPermissions(ALL_PERMISSIONS);
+            view.checkAllPermissions(WaterManager.getAllPermissions());
         }
     }
 
