@@ -45,7 +45,8 @@ public class WaterManager {
 
     private static final String[] ALL_PERMISSIONS = {
             Manifest.permission.RECEIVE_BOOT_COMPLETED,
-            Manifest.permission.DISABLE_KEYGUARD
+            Manifest.permission.DISABLE_KEYGUARD,
+            Manifest.permission.WAKE_LOCK
     };
 
     private final ForceWakeLock mWakeLock;
