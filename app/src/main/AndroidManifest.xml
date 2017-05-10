@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.okandroid.water">
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
     <application android:name="com.okandroid.water.WaterApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

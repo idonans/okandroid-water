@@ -1,7 +1,9 @@
 package com.okandroid.water.data;
 
+import android.app.KeyguardManager;
 import android.app.Notification;
 import android.content.Context;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
@@ -13,6 +15,8 @@ import com.okandroid.water.R;
  */
 
 public class WaterManager {
+
+    private static final String TAG = "WaterManager";
 
     private static class InstanceHolder {
 
@@ -34,9 +38,20 @@ public class WaterManager {
 
     private static final int LOCK_NOTIFICATION_ID = 1;
 
+    private final SingleWakeLock mWakeLock;
+    private final KeyguardManager.KeyguardLock mKeyguardLock;
+
     private WaterManager() {
+        Context context = AppContext.getContext();
+
+        mWakeLock = new SingleWakeLock();
+
+        KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        mKeyguardLock = km.newKeyguardLock(TAG);
 
         showLockNotification();
+
+        unlockScreen();
     }
 
     private void showLockNotification() {
@@ -49,6 +64,82 @@ public class WaterManager {
                 .setAutoCancel(false)
                 .build();
         NotificationManagerCompat.from(context).notify(LOCK_NOTIFICATION_ID, notification);
+    }
+
+    /**
+     * 解锁屏幕
+     */
+    public void unlockScreen() {
+        safetyRun(new Runnable() {
+            @Override
+            public void run() {
+                mWakeLock.acquire();
+            }
+        });
+
+        safetyRun(new Runnable() {
+            @Override
+            public void run() {
+                mKeyguardLock.disableKeyguard();
+            }
+        });
+    }
+
+    /**
+     * 锁屏
+     */
+    public void lockScreen() {
+        safetyRun(new Runnable() {
+            @Override
+            public void run() {
+                mWakeLock.release();
+            }
+        });
+
+        safetyRun(new Runnable() {
+            @Override
+            public void run() {
+                mKeyguardLock.reenableKeyguard();
+            }
+        });
+    }
+
+    private class SingleWakeLock {
+
+        private final PowerManager.WakeLock mWakeLock;
+        private boolean mLocked;
+
+        private SingleWakeLock() {
+            Context context = AppContext.getContext();
+
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            mWakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
+        }
+
+        public synchronized void acquire() {
+            if (!mLocked) {
+                mLocked = true;
+                mWakeLock.acquire();
+            }
+        }
+
+        public synchronized void release() {
+            if (mLocked) {
+                mLocked = false;
+                mWakeLock.release();
+            }
+        }
+
+    }
+
+    private static void safetyRun(Runnable runnable) {
+        if (runnable != null) {
+            try {
+                runnable.run();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
