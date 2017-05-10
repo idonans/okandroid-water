@@ -16,8 +16,17 @@ android {
 
         buildConfigField 'String', 'CHANNEL', '"standard"'
     }
+    signingConfigs {
+        okandroid {
+            storeFile rootProject.file('okandroid_keystore.jks')
+            storePassword property("okandroid_keystore.store_password")
+            keyAlias property("okandroid_keystore.key_alias")
+            keyPassword property("okandroid_keystore.key_password")
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.okandroid
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
