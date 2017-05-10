@@ -67,7 +67,7 @@ public class WaterManager {
     }
 
     /**
-     * 解锁屏幕
+     * 保持屏幕唤醒, 关闭屏保
      */
     public void unlockScreen() {
         safetyRun(new Runnable() {
@@ -86,7 +86,7 @@ public class WaterManager {
     }
 
     /**
-     * 锁屏
+     * 开启屏保
      */
     public void lockScreen() {
         safetyRun(new Runnable() {
@@ -112,7 +112,7 @@ public class WaterManager {
             Context context = AppContext.getContext();
 
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            mWakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK, TAG);
+            mWakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, TAG);
             mWakeLock.setReferenceCounted(false);
         }
 

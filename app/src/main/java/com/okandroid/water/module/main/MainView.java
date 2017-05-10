@@ -8,4 +8,6 @@ import com.okandroid.water.app.BaseView;
 
 public interface MainView extends BaseView {
 
+    void checkAllPermissions(String[] permissions);
+
 }
