@@ -1,6 +1,5 @@
 package com.okandroid.water.module.main;
 
-import com.okandroid.boot.thread.Threads;
 import com.okandroid.water.app.BaseViewProxy;
 
 /**
@@ -14,7 +13,6 @@ public class MainViewProxy extends BaseViewProxy<MainView> {
 
     @Override
     protected void onPreDataLoadBackground() {
-        Threads.sleepQuietly(2000);
     }
 
     @Override

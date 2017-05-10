@@ -14,7 +14,6 @@ public class SplashViewProxy extends BaseViewProxy<SplashView> {
 
     @Override
     protected void onPreDataLoadBackground() {
-        Threads.sleepQuietly(2000);
     }
 
     @Override
@@ -26,7 +25,15 @@ public class SplashViewProxy extends BaseViewProxy<SplashView> {
             return;
         }
 
-        view.directToMain();
+        Threads.postUi(new Runnable() {
+            @Override
+            public void run() {
+                SplashView view = getView();
+                if (view == null) {
+                    return;
+                }
+                view.directToMain();
+            }
+        }, 3000);
     }
-
 }
