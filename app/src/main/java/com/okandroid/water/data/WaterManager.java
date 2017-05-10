@@ -38,13 +38,13 @@ public class WaterManager {
 
     private static final int LOCK_NOTIFICATION_ID = 1;
 
-    private final SingleWakeLock mWakeLock;
+    private final ForceWakeLock mWakeLock;
     private final KeyguardManager.KeyguardLock mKeyguardLock;
 
     private WaterManager() {
         Context context = AppContext.getContext();
 
-        mWakeLock = new SingleWakeLock();
+        mWakeLock = new ForceWakeLock();
 
         KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         mKeyguardLock = km.newKeyguardLock(TAG);
@@ -104,30 +104,24 @@ public class WaterManager {
         });
     }
 
-    private class SingleWakeLock {
+    private class ForceWakeLock {
 
         private final PowerManager.WakeLock mWakeLock;
-        private boolean mLocked;
 
-        private SingleWakeLock() {
+        private ForceWakeLock() {
             Context context = AppContext.getContext();
 
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            mWakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
+            mWakeLock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK, TAG);
+            mWakeLock.setReferenceCounted(false);
         }
 
-        public synchronized void acquire() {
-            if (!mLocked) {
-                mLocked = true;
-                mWakeLock.acquire();
-            }
+        public void acquire() {
+            mWakeLock.acquire();
         }
 
-        public synchronized void release() {
-            if (mLocked) {
-                mLocked = false;
-                mWakeLock.release();
-            }
+        public void release() {
+            mWakeLock.release();
         }
 
     }
