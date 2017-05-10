@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.okandroid.water">
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application android:name="com.okandroid.water.WaterApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,5 +19,11 @@
         </activity>
         <activity android:name="com.okandroid.water.module.main.MainActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <receiver android:name="com.okandroid.water.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

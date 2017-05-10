@@ -10,6 +10,7 @@ import com.okandroid.boot.data.ProcessManager;
 import com.okandroid.boot.data.StorageManager;
 import com.okandroid.boot.lang.Log;
 import com.okandroid.boot.thread.Threads;
+import com.okandroid.water.data.WaterManager;
 
 import java.util.Locale;
 
@@ -70,6 +71,8 @@ public class AppInit {
                 }
             }
         });
+
+        WaterManager.getInstance();
     }
 
     public static class BuildConfigAdapterImpl implements App.BuildConfigAdapter {
